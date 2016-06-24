@@ -1,5 +1,6 @@
 # Sortable
 Neat home is based on Sortable, a minimalist JavaScript library for reorderable drag-and-drop lists.
+It will only save the order of your Backlog in your browser's localStorage, not the tasks you have added to Today's Fast Tracks or to the "Done" Column
 
 Demo: http://rubaxa.github.io/Sortable/
 
