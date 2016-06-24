@@ -78,22 +78,6 @@
 		onEnd: function(evt){ console.log('onEnd.foo:', evt.item);}
 	});
 
-
-	// Multi groups
-	Sortable.create(byId('multi'), {
-		animation: 150,
-		draggable: '.tile',
-		handle: '.tile__name'
-	});
-
-	[].forEach.call(byId('multi').getElementsByClassName('tile__list'), function (el){
-		Sortable.create(el, {
-			group: 'photo',
-			animation: 150
-		});
-	});
-
-
 	// Editable list
 	var editableList = Sortable.create(byId('editable'), {
 		animation: 150,
@@ -114,93 +98,7 @@
 			editableList.el.appendChild(el);
 		});
 	};
-
-
-	// Advanced groups
-	[{
-		name: 'advanced',
-		pull: true,
-		put: true
-	},
-	{
-		name: 'advanced',
-		pull: 'clone',
-		put: false
-	}, {
-		name: 'advanced',
-		pull: false,
-		put: true
-	}].forEach(function (groupOpts, i) {
-		Sortable.create(byId('advanced-' + (i + 1)), {
-			sort: (i != 1),
-			group: groupOpts,
-			animation: 150
-		});
-	});
-
-
-	// 'handle' option
-	Sortable.create(byId('handle-1'), {
-		handle: '.drag-handle',
-		animation: 150
-	});
-
-
-	// Angular example
-	angular.module('todoApp', ['ng-sortable'])
-		.constant('ngSortableConfig', {onEnd: function() {
-			console.log('default onEnd()');
-		}})
-		.controller('TodoController', ['$scope', function ($scope) {
-			$scope.todos = [
-				{text: 'learn angular', done: true},
-				{text: 'build an angular app', done: false}
-			];
-
-			$scope.addTodo = function () {
-				$scope.todos.push({text: $scope.todoText, done: false});
-				$scope.todoText = '';
-			};
-
-			$scope.remaining = function () {
-				var count = 0;
-				angular.forEach($scope.todos, function (todo) {
-					count += todo.done ? 0 : 1;
-				});
-				return count;
-			};
-
-			$scope.archive = function () {
-				var oldTodos = $scope.todos;
-				$scope.todos = [];
-				angular.forEach(oldTodos, function (todo) {
-					if (!todo.done) $scope.todos.push(todo);
-				});
-			};
-		}])
-		.controller('TodoControllerNext', ['$scope', function ($scope) {
-			$scope.todos = [
-				{text: 'learn Sortable', done: true},
-				{text: 'use ng-sortable', done: false},
-				{text: 'Enjoy', done: false}
-			];
-
-			$scope.remaining = function () {
-				var count = 0;
-				angular.forEach($scope.todos, function (todo) {
-					count += todo.done ? 0 : 1;
-				});
-				return count;
-			};
-
-			$scope.sortableConfig = { group: 'todo', animation: 150 };
-			'Start End Add Update Remove Sort'.split(' ').forEach(function (name) {
-				$scope.sortableConfig['on' + name] = console.log.bind(console, name);
-			});
-		}]);
 })();
-
-
 
 // Background
 document.addEventListener("DOMContentLoaded", function () {

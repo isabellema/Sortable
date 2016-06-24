@@ -1,5 +1,5 @@
 # Sortable
-Sortable is a minimalist JavaScript library for reorderable drag-and-drop lists.
+Neat home is based on Sortable, a minimalist JavaScript library for reorderable drag-and-drop lists.
 
 Demo: http://rubaxa.github.io/Sortable/
 

@@ -10,7 +10,7 @@ html, body {
 	position: relative;
 	color: #464637;
 	min-height: 100%;
-	font-size: 20px;
+	font-size: 13px;
 	font-family: 'Roboto', sans-serif;
 	font-weight: 300;
 }
@@ -22,6 +22,7 @@ h1 {
 	font-family: 'Roboto', sans-serif;
 	font-weight: 300;
 	text-align: center;
+	text-transform: uppercase;
 }
 
 
@@ -32,7 +33,7 @@ ul {
 }
 
 .container {
-	width: 80%;
+	width: 90%;
 	margin: auto;
 	min-width: 1100px;
 	max-width: 1300px;
@@ -75,7 +76,7 @@ img {
 }
 	.title_xl {
 		padding: 3px 15px;
-		font-size: 40px;
+		font-size: 20px;
 	}
 
 
@@ -206,7 +207,7 @@ img {
 		cursor: pointer;
 		background: #5F9EDF;
 		padding: 10px 0;
-		font-size: 20px;
+		font-size: 13px;
 	}
 		#filter button:hover {
 			opacity: 1;
@@ -218,7 +219,7 @@ img {
 
 .drag-handle {
 	margin-right: 10px;
-	font: bold 20px Sans-Serif;
+	font: bold 13px Sans-Serif;
 	color: #5F9EDF;
 	display: inline-block;
 	cursor: move;
@@ -227,7 +228,7 @@ img {
 
 #todos input {
 	padding: 5px;
-	font-size: 14px;
+	font-size: 12px;
 	font-family: 'Roboto', sans-serif;
 	font-weight: 300;
 }
