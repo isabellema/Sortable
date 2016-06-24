@@ -3,6 +3,7 @@ Neat home is based on Sortable, a minimalist JavaScript library for reorderable 
 
 Demo: http://rubaxa.github.io/Sortable/
 
+More features & documentation in original project: https://github.com/RubaXa/Sortable
 
 ## Features
 
@@ -12,11 +13,9 @@ Demo: http://rubaxa.github.io/Sortable/
  * Supports drag handles *and selectable text* (better than voidberg's html5sortable)
  * Smart auto-scrolling
  * Built using native HTML5 drag and drop API
- * Supports [Meteor](https://github.com/SortableJS/meteor), [AngularJS](#ng), [React](#react), [Knockout](https://github.com/SortableJS/knockout-sortablejs) and [Polymer](#polymer)
- * Supports any CSS library, e.g. [Bootstrap](#bs)
  * Simple API
  * [CDN](#cdn)
- * No jQuery (but there is [support](#jq))
+ * No jQuery
 
 
 <br/>
@@ -133,18 +132,6 @@ var sortable = new Sortable(el, {
 ---
 
 
-#### `group` option
-To drag elements from one list into another, both lists must have the same `group` value.
-You can also define whether lists can give away, give and keep a copy (`clone`), and receive elements.
-
- * name: `String` — group name
- * pull: `true|false|'clone'` — ability to move from the list. `clone` — copy the item, rather than move.
- * put: `true|false|["foo", "bar"]` — whether elements can be added from other lists, or an array of group names from which elements can be taken. Demo: http://jsbin.com/naduvo/2/edit?html,js,output
-
-
----
-
-
 #### `sort` option
 Sorting inside list.
 
@@ -176,37 +163,6 @@ document.getElementById("switcher").onclick = function () {
 
 	sortable.option("disabled", !state); // set
 };
-```
-
-
----
-
-
-#### `handle` option
-To make list items draggable, Sortable disables text selection by the user.
-That's not always desirable. To allow text selection, define a drag handler,
-which is an area of every list element that allows it to be dragged around.
-
-Demo: http://jsbin.com/newize/1/edit?html,js,output
-
-```js
-Sortable.create(el, {
-	handle: ".my-handle"
-});
-```
-
-```html
-<ul>
-	<li><span class="my-handle">::</span> list item text one
-	<li><span class="my-handle">::</span> list item text two
-</ul>
-```
-
-```css
-.my-handle {
-	cursor: move;
-	cursor: -webkit-grabbing;
-}
 ```
 
 
@@ -318,240 +274,6 @@ The speed at which the window should scroll once the mouse pointer gets within t
 ---
 
 
-<a name="ng"></a>
-### Support AngularJS
-Include [ng-sortable.js](ng-sortable.js)
-
-Demo: http://jsbin.com/naduvo/1/edit?html,js,output
-
-```html
-<div ng-app="myApp" ng-controller="demo">
-	<ul ng-sortable>
-		<li ng-repeat="item in items">{{item}}</li>
-	</ul>
-
-	<ul ng-sortable="{ group: 'foobar' }">
-		<li ng-repeat="item in foo">{{item}}</li>
-	</ul>
-
-	<ul ng-sortable="barConfig">
-		<li ng-repeat="item in bar">{{item}}</li>
-	</ul>
-</div>
-```
-
-
-```js
-angular.module('myApp', ['ng-sortable'])
-	.controller('demo', ['$scope', function ($scope) {
-		$scope.items = ['item 1', 'item 2'];
-		$scope.foo = ['foo 1', '..'];
-		$scope.bar = ['bar 1', '..'];
-		$scope.barConfig = {
-			group: 'foobar',
-			animation: 150,
-			onSort: function (/** ngSortEvent */evt){
-				// @see https://github.com/RubaXa/Sortable/blob/master/ng-sortable.js#L18-L24
-			}
-		};
-	}]);
-```
-
-
----
-
-
-<a name="react"></a>
-### Support React
-Include [react-sortable-mixin.js](react-sortable-mixin.js).
-See [more options](react-sortable-mixin.js#L26).
-
-
-```jsx
-var SortableList = React.createClass({
-	mixins: [SortableMixin],
-
-	getInitialState: function() {
-		return {
-			items: ['Mixin', 'Sortable']
-		};
-	},
-
-	handleSort: function (/** Event */evt) { /*..*/ },
-
-	render: function() {
-		return <ul>{
-			this.state.items.map(function (text) {
-				return <li>{text}</li>
-			})
-		}</ul>
-	}
-});
-
-React.render(<SortableList />, document.body);
-
-
-//
-// Groups
-//
-var AllUsers = React.createClass({
-	mixins: [SortableMixin],
-
-	sortableOptions: {
-		ref: "user",
-		group: "shared",
-		model: "users"
-	},
-
-	getInitialState: function() {
-		return { users: ['Abbi', 'Adela', 'Bud', 'Cate', 'Davis', 'Eric']; };
-	},
-
-	render: function() {
-		return (
-			<h1>Users</h1>
-			<ul ref="user">{
-				this.state.users.map(function (text) {
-					return <li>{text}</li>
-				})
-			}</ul>
-		);
-	}
-});
-
-var ApprovedUsers = React.createClass({
-	mixins: [SortableMixin],
-	sortableOptions: { group: "shared" },
-
-	getInitialState: function() {
-		return { items: ['Hal', 'Judy']; };
-	},
-
-	render: function() {
-		return <ul>{
-			this.state.items.map(function (text) {
-				return <li>{text}</li>
-			})
-		}</ul>
-	}
-});
-
-React.render(<div>
-	<AllUsers/>
-	<hr/>
-	<ApprovedUsers/>
-</div>, document.body);
-```
-
-### Support React ES2015 / TypeScript syntax
-As mixins are not supported in ES2015 / TypeScript syntax here is example of ES2015 ref based implementation.
-Using refs is the preferred (by facebook) "escape hatch" to underlaying DOM nodes: [React: The ref Callback Attribute](https://facebook.github.io/react/docs/more-about-refs.html#the-ref-callback-attribute)
-
-```js
-import * as React from "react";
-import Sortable from 'sortablejs';
-
-export class SortableExampleEsnext extends React.Component {
-
-  sortableContainersDecorator = (componentBackingInstance) => {
-    // check if backing instance not null
-    if (componentBackingInstance) {
-      let options = {
-        handle: ".group-title" // Restricts sort start click/touch to the specified element
-      };
-      Sortable.create(componentBackingInstance, options);
-    }
-  };
-
-  sortableGroupDecorator = (componentBackingInstance) => {
-    // check if backing instance not null
-    if (componentBackingInstance) {
-      let options = {
-        draggable: "div", // Specifies which items inside the element should be sortable
-        group: "shared"
-      };
-      Sortable.create(componentBackingInstance, options);
-    }
-  };
-
-  render() {
-    return (
-      <div className="container" ref={this.sortableContainersDecorator}>
-        <div className="group">
-          <h2 className="group-title">Group 1</h2>
-          <div className="group-list" ref={this.sortableGroupDecorator}>
-            <div>Swap them around</div>
-            <div>Swap us around</div>
-            <div>Swap things around</div>
-            <div>Swap everything around</div>
-          </div>
-        </div>
-        <div className="group">
-          <h2 className="group-title">Group 2</h2>
-          <div className="group-list" ref={this.sortableGroupDecorator}>
-            <div>Swap them around</div>
-            <div>Swap us around</div>
-            <div>Swap things around</div>
-            <div>Swap everything around</div>
-          </div>
-        </div>
-      </div>
-    );
-  }
-}
-```
-
----
-
-<a name="polymer"></a>
-### Support Polymer
-```html
-
-<link rel="import" href="bower_components/Sortable/Sortable.html">
-
-<sortable-js handle=".handle">
-  <template is="dom-repeat" items={{names}}>
-    <div>{{item}}</div>
-  </template>
-</sortable-js>
-```
-
-### Method
-
-
-##### option(name:`String`[, value:`*`]):`*`
-Get or set the option.
-
-
-
-##### closest(el:`String`[, selector:`HTMLElement`]):`HTMLElement|null`
-For each element in the set, get the first element that matches the selector by testing the element itself and traversing up through its ancestors in the DOM tree.
-
-
-##### toArray():`String[]`
-Serializes the sortable's item `data-id`'s (`dataIdAttr` option) into an array of string.
-
-
-##### sort(order:`String[]`)
-Sorts the elements according to the array.
-
-```js
-var order = sortable.toArray();
-sortable.sort(order.reverse()); // apply
-```
-
-
-##### save()
-Save the current sorting (see [store](#store))
-
-
-##### destroy()
-Removes the sortable functionality completely.
-
-
----
-
-
 <a name="store"></a>
 ### Store
 Saving and restoring of the sort.
@@ -588,38 +310,6 @@ Sortable.create(el, {
 		}
 	}
 })
-```
-
-
----
-
-
-<a name="bs"></a>
-### Bootstrap
-Demo: http://jsbin.com/luxero/2/edit?html,js,output
-
-```html
-<!-- Latest compiled and minified CSS -->
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css"/>
-
-
-<!-- Latest Sortable -->
-<script src="http://rubaxa.github.io/Sortable/Sortable.js"></script>
-
-
-<!-- Simple List -->
-<ul id="simpleList" class="list-group">
-	<li class="list-group-item">This is <a href="http://rubaxa.github.io/Sortable/">Sortable</a></li>
-	<li class="list-group-item">It works with Bootstrap...</li>
-	<li class="list-group-item">...out of the box.</li>
-	<li class="list-group-item">It has support for touch devices.</li>
-	<li class="list-group-item">Just drag some elements around.</li>
-</ul>
-
-<script>
-    // Simple list
-    Sortable.create(simpleList, { /* options */ });
-</script>
 ```
 
 
@@ -677,36 +367,6 @@ Link to the active instance.
 <script src="//cdn.jsdelivr.net/sortable/latest/Sortable.min.js"></script>
 ```
 
-
----
-
-
-<a name="jq"></a>
-### jQuery compatibility
-To assemble plugin for jQuery, perform the following steps:
-
-```bash
-  cd Sortable
-  npm install
-  grunt jquery
-```
-
-Now you can use `jquery.fn.sortable.js`:<br/>
-(or `jquery.fn.sortable.min.js` if you run `grunt jquery:min`)
-
-```js
-  $("#list").sortable({ /* options */ }); // init
-
-  $("#list").sortable("widget"); // get Sortable instance
-
-  $("#list").sortable("destroy"); // destroy Sortable instance
-
-  $("#list").sortable("{method-name}"); // call an instance method
-
-  $("#list").sortable("{method-name}", "foo", "bar"); // call an instance method with parameters
-```
-
-And `grunt jquery:mySortableFunc` → `jquery.fn.mySortableFunc.js`
 
 ---
 
